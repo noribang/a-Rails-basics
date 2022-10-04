@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   # Bird
   # get '/birds', to: 'birds#index'
   # get '/birds/:id', to: 'birds#show'
-  resources :birds, only: [:index, :show, :create]
+  resources :birds, only: [:index, :show, :create, :update]
+  # Custom route to increment Bird likes from backend
+  patch '/birds/:id/like', to: "birds#increment_likes"
 
 end

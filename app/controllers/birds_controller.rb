@@ -15,7 +15,7 @@ class BirdsController < ApplicationController
         end
     end
 
-    # CREATE
+    # POST /birds/
     def create
         # byebug
         ## Strong params used
@@ -25,11 +25,44 @@ class BirdsController < ApplicationController
         render json: bird, status: :created
     end
 
+    # PATCH /birds/:id
+    # update any attribute
+    def update
+        # Find the bird by id from route params
+        bird = Bird.find_by(id: params[:id])
+        # Update bird using strong params from body of request
+        # Render response
+        if bird
+            bird.update(bird_params)
+            render json: bird
+        else
+            render json: { error: "Bird not found" }, status: :not_found
+        end
+
+    end
+
+    # PATCH '/birds/:id/like'
+    def increment_likes
+        # Find the bird by id from route params
+        bird = Bird.find_by(id: params[:id])
+        # Update bird using current bird.likes + 1 to update likes.
+        # Render response
+        if bird
+            bird.update(likes: bird.likes + 1)
+            render json: bird
+        else
+            render json: { error: "Bird not found" }, status: :not_found
+        end
+
+    end
+
+
+
     private
 
     ## Strong params
     def bird_params
-       params.permit(:name, :species) 
+       params.permit(:name, :species, :likes) 
     end
 
 end
