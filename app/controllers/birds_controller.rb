@@ -18,8 +18,18 @@ class BirdsController < ApplicationController
     # CREATE
     def create
         # byebug
-        bird = Bird.create(name: params[:name], species: params[:species])
+        ## Strong params used
+        bird = Bird.create(bird_params)
+        # Or original explicitly specify attributes:
+        # bird = Bird.create(name: params[:name], species: params[:species])
         render json: bird, status: :created
+    end
+
+    private
+
+    ## Strong params
+    def bird_params
+       params.permit(:name, :species) 
     end
 
 end
