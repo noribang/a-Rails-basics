@@ -38,7 +38,6 @@ class BirdsController < ApplicationController
         else
             render json: { error: "Bird not found" }, status: :not_found
         end
-
     end
 
     # PATCH '/birds/:id/like'
@@ -50,6 +49,21 @@ class BirdsController < ApplicationController
         if bird
             bird.update(likes: bird.likes + 1)
             render json: bird
+        else
+            render json: { error: "Bird not found" }, status: :not_found
+        end
+
+    end
+
+    # DELETE /birds/:id
+    def destroy
+        # Find the bird by id from route params
+        bird = Bird.find_by(id: params[:id])
+        # If found destroy bird object from db
+        # Render response
+        if bird
+            bird.destroy
+            head :no_content
         else
             render json: { error: "Bird not found" }, status: :not_found
         end
